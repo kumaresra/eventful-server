@@ -18,6 +18,7 @@ public class WeatherService {
     @Value("${weather.url}")
     private String url;
 
+//    @CircuitBreaker(name = BACKEND, fallbackMethod = "fallback")
     public WeatherResponse getWeather(double lattitude, double longitude){
         final String fullUrl = url+"?lat=" + lattitude + "&lon=" + longitude +
                 "&APPID=" + apiKey + "&units=metric";
