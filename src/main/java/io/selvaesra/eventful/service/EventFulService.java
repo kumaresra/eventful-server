@@ -57,14 +57,14 @@ public class EventFulService {
         String format = dateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         List<Event> events = eventRepository.findByLocationAndCategoryAndFromDateTime(
                 location,category, format);
-        return events.stream().map(this::apply).collect(Collectors.toList());
+        return events.stream().map(this::applyWeather).collect(Collectors.toList());
     }
 
-    private EventResponse apply(Event event) {
+    private EventResponse applyWeather(Event event) {
         Geometry geometryOfCoordinates = event.getVenue().getGeometryOfCoordinates();
-        double lattitude = geometryOfCoordinates.getCoordinate().x;
+        double latitude = geometryOfCoordinates.getCoordinate().x;
         double longitude = geometryOfCoordinates.getCoordinate().y;
-        WeatherResponse weather = weatherService.getWeather(lattitude, longitude);
+        WeatherResponse weather = weatherService.getWeather(latitude, longitude);
         return new EventResponse(event, weather);
     }
 }
