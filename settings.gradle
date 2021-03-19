@@ -1,1 +1,2 @@
 rootProject.name = 'eventful-server'
+org.gradle.daemon=false
