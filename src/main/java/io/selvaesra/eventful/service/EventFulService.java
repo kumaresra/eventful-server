@@ -64,7 +64,7 @@ public class EventFulService {
     private String convertDateTimeToString(String fromDateTime) {
         ZonedDateTime fromDateTimeWithZone = Instant.ofEpochMilli(Long.parseLong(fromDateTime))
                 .atZone(ZoneId.of(UTC));
-        return fromDateTimeWithZone.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        return fromDateTimeWithZone.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     private EventResponse applyWeather(Event event) {
