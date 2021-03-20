@@ -6,11 +6,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class RestTemplateLoadBalanced {
-
     @LoadBalanced
     public RestTemplate getTemplate() {
         return new RestTemplate();
     }
-
-
 }

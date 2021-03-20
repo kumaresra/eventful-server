@@ -12,10 +12,6 @@ import io.selvaesra.eventful.repositories.VenueRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -53,18 +49,10 @@ public class EventFulService {
     }
 
     public List<EventResponse> getEventsFor(String location, String category,
-                                            String fromDateTime, String toDateTime) {
-        String fromDateTimeFormat = convertDateTimeToString(fromDateTime);
-        String toDateTimeFormat = convertDateTimeToString(toDateTime);
+                                            String fromDateTimeFormat, String toDateTimeFormat) {
         List<Event> events = eventRepository.findByLocationAndCategoryAndFromDateTime(
                 location,category, fromDateTimeFormat,toDateTimeFormat);
         return events.stream().map(this::applyWeather).collect(Collectors.toList());
-    }
-
-    private String convertDateTimeToString(String fromDateTime) {
-        ZonedDateTime fromDateTimeWithZone = Instant.ofEpochMilli(Long.parseLong(fromDateTime))
-                .atZone(ZoneId.of(UTC));
-        return fromDateTimeWithZone.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     private EventResponse applyWeather(Event event) {
