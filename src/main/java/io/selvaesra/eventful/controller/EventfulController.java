@@ -34,11 +34,12 @@ public class EventfulController {
         return eventfulService.getAllLocations();
     }
 
-    @ApiOperation(value = "Find All Events for given category and from date", notes = "${EventfulController.findEvents}")
+    @ApiOperation(value = "Find All Events for given category and from and to date", notes = "${EventfulController.findEvents}")
     @RequestMapping(method = RequestMethod.GET, value = "/events")
     public List<EventResponse> findEvents(@RequestParam("location") String location,
                                           @RequestParam("category") String category,
-                                          @RequestParam("fromDateTime")String fromDateTime) {
-        return eventfulService.getEventsFor(location,category,fromDateTime);
+                                          @RequestParam("fromDateTime")String fromDateTime,
+                                          @RequestParam("toDateTime")String toDateTime) {
+        return eventfulService.getEventsFor(location,category,fromDateTime,toDateTime);
     }
 }

@@ -24,6 +24,7 @@ import java.util.stream.StreamSupport;
 @Slf4j
 public class EventFulService {
 
+    public static final String UTC = "Etc/UTC";
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
     private final VenueRepository venueRepository;
@@ -51,13 +52,19 @@ public class EventFulService {
                 .map(Venue::getLocation).distinct().collect(Collectors.toList());
     }
 
-    public List<EventResponse> getEventsFor(String location, String category, String fromDateTime) {
-        ZonedDateTime dateTime = Instant.ofEpochMilli(Long.parseLong(fromDateTime+"000"))
-                .atZone(ZoneId.of("GMT"));
-        String format = dateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+    public List<EventResponse> getEventsFor(String location, String category,
+                                            String fromDateTime, String toDateTime) {
+        String fromDateTimeFormat = convertDateTimeToString(fromDateTime);
+        String toDateTimeFormat = convertDateTimeToString(toDateTime);
         List<Event> events = eventRepository.findByLocationAndCategoryAndFromDateTime(
-                location,category, format);
+                location,category, fromDateTimeFormat,toDateTimeFormat);
         return events.stream().map(this::applyWeather).collect(Collectors.toList());
+    }
+
+    private String convertDateTimeToString(String fromDateTime) {
+        ZonedDateTime fromDateTimeWithZone = Instant.ofEpochMilli(Long.parseLong(fromDateTime))
+                .atZone(ZoneId.of(UTC));
+        return fromDateTimeWithZone.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
     private EventResponse applyWeather(Event event) {
