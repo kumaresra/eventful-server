@@ -4,3 +4,9 @@ API server to serve all the events happening in a particular location by categor
 
 ## Technology Stack
 
+* JDK 15
+* Spring Boot
+* MariaDB
+* Swagger (Open API)
+* JPA
+* ReactJS
